@@ -1,0 +1,245 @@
+openapi: 3.0.1
+info:
+  title: Todo-Listen-Verwaltung
+  description: ""
+  contact:
+    email: wichmann@bbs-os-brinkstr.de
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 0.1.0
+servers:
+- url: http://127.0.0.1:5000/
+tags:
+- name: Listenverwaltung
+paths:
+  /list/{list_id}:
+    get:
+      tags:
+      - Listenverwaltung
+      summary: Get all items from list
+      operationId: getList
+      parameters:
+      - name: list_id
+        in: path
+        description: list id
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: List item returned
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TodoEntry'
+        404:
+          description: Invalid list id
+          content: {}
+    delete:
+      tags:
+      - Listenverwaltung
+      summary: Delete a list
+      operationId: deleteList
+      parameters:
+      - name: list_id
+        in: path
+        description: list id
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: List was deleted
+          content: {}
+        404:
+          description: Invalid list id
+          content: {}
+    patch:
+      tags:
+      - Listenverwaltung
+      summary: Update a list
+      operationId: updateList
+      parameters:
+      - name: list_id
+        in: path
+        description: list id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: list object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TodoList'
+        required: true
+      responses:
+        200:
+          description: List updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TodoList'
+        404:
+          description: List not found
+        500:
+          description: Changes could not be processed
+  /list:
+    post:
+      tags:
+      - Listenverwaltung
+      summary: Add new list
+      operationId: addList
+      requestBody:
+        description: list object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TodoList'
+        required: true
+      responses:
+        200:
+          description: List added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TodoList'
+        500:
+          description: List could not be added
+          content: {}
+      x-codegen-request-body-name: body
+  /list/{list_id}/item:
+    post:
+      tags:
+      - Listenverwaltung
+      summary: Add new item
+      operationId: addItem
+      parameters:
+      - name: list_id
+        in: path
+        description: list id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: item object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TodoEntry'
+      responses:
+        201:
+          description: Item added to the list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TodoEntry'
+        400:
+          description: Invalid input
+        404:
+          description: List not found
+  /list/{list_id}/item/{item_id}:
+    patch:
+      tags:
+      - Listenverwaltung
+      summary: Update existing item
+      operationId: updateItem
+      parameters:
+      - name: list_id
+        in: path
+        description: list id
+        required: true
+        schema:
+          type: string
+      - name: item_id
+        in: path
+        description: list id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: item object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TodoEntry'
+      responses:
+        200:
+          description: Item updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TodoEntry'
+        404:
+          description: Item not found
+        500:
+          description: Changes could not be processed
+    delete:
+      tags:
+      - Listenverwaltung
+      summary: Delete existing item
+      operationId: deleteItem
+      parameters:
+      - name: list_id
+        in: path
+        description: list id
+        required: true
+        schema:
+          type: string
+      - name: item_id
+        in: path
+        description: list id
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Item deleted
+        404:
+          description: Item not found
+  /lists:
+    get:
+      tags:
+      - Listenverwaltung
+      summary: Get all lists
+      operationId: getLists
+      responses:
+        200:
+          description: A list of all lists
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TodoList'
+        500:
+          description: Unable to retrieve lists
+components:
+  schemas:
+    TodoList:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+    TodoEntry:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        user_id:
+          type: string
+          format: uuid
+        list_id:
+          type: string
+          format: uuid
