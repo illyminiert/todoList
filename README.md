@@ -42,7 +42,7 @@
     ```
 
 # 2. Benutzerverwaltung
-### „willi“ – Normaler Benutzer ohne Administratorrechte
+## „willi“ – Normaler Benutzer ohne Administratorrechte
 
 - **Benutzer "willi" hinzufügen:**
     ```sh
@@ -56,7 +56,7 @@
     - Other: /
     - Correct? "yes"
 
-### „fernzugriff“ – Benutzer für den Zugriff von außen mittels SSH mit sudo-Rechten
+## „fernzugriff“ – Benutzer für den Zugriff von außen mittels SSH mit sudo-Rechten
 
 - **Benutzer "fernzugriff" hinzufügen:**
     ```sh
@@ -80,7 +80,7 @@
         - `-aG sudo`: Fügt den Benutzer zur Gruppe sudo hinzu. Das `-a` steht für "append" (hinzufügen), und das `-G` gibt die Gruppe an.
         - `fernzugriff`: Der Name des Benutzers, der zur sudo-Gruppe hinzugefügt werden soll.
 
-### SSH-Dienst für den Benutzer „fernzugriff“ zur Administration
+## SSH-Dienst für den Benutzer „fernzugriff“ zur Administration
 
 - **OpenSSH-Server installieren oder auf den neuesten Stand bringen:**
     ```sh
